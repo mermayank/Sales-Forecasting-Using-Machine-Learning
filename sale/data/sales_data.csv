@@ -1,0 +1,11 @@
+InvoiceID,Date,ProductID,ProductCategory,ProductName,Quantity,PricePerUnit,CustomerID,StoreID,City,TotalAmount
+1001,2023-01-01,P001,Electronics,Smartphone,2,15000,CU001,S001,Delhi,30000
+1002,2023-01-02,P002,Grocery,Rice,10,60,CU002,S002,Mumbai,600
+1003,2023-01-03,P003,Apparel,T-Shirt,5,500,CU003,S001,Delhi,2500
+1004,2023-01-04,P004,Electronics,Laptop,1,55000,CU004,S003,Pune,55000
+1005,2023-01-05,P005,Grocery,Milk,8,50,CU005,S002,Mumbai,400
+1006,2023-01-06,P006,Apparel,Jeans,3,1200,CU006,S001,Delhi,3600
+1007,2023-01-07,P007,Electronics,Tablet,2,20000,CU007,S003,Pune,40000
+1008,2023-01-08,P008,Grocery,Bread,15,40,CU008,S002,Mumbai,600
+1009,2023-01-09,P009,Apparel,Jacket,1,2500,CU009,S001,Delhi,2500
+1010,2023-01-10,P010,Electronics,Headphones,4,1500,CU010,S003,Pune,6000 

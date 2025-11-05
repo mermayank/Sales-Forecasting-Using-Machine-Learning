@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Forecasting App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .header {
+            background: #3b82f6;
+            color: #fff;
+            padding: 32px 0 24px 0;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.08);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .header p {
+            margin: 8px 0 0 0;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        .container {
+            max-width: 440px;
+            margin: -40px auto 0 auto;
+            background: #fff;
+            padding: 32px 32px 24px 32px;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(59,130,246,0.10);
+            position: relative;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        label {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #374151;
+        }
+        input, select {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #f1f5f9;
+            transition: border 0.2s;
+        }
+        input:focus, select:focus {
+            border: 1.5px solid #3b82f6;
+            outline: none;
+        }
+        button {
+            margin-top: 10px;
+            padding: 12px;
+            background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.10);
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+        }
+        .result {
+            margin-top: 24px;
+            padding: 16px;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            color: #0369a1;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .result i {
+            color: #0ea5e9;
+            font-size: 1.5rem;
+        }
+        .metrics {
+            margin-top: 18px;
+            padding: 14px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        .metrics h4 {
+            margin: 0 0 10px 0;
+            color: #334155;
+        }
+        .metrics p {
+            margin: 5px 0;
+            color: #64748b;
+        }
+        .nav-links {
+            text-align: center;
+            margin-top: 24px;
+        }
+        .nav-links a {
+            color: #3b82f6;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #6366f1;
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 48px;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.98rem;
+            padding-bottom: 16px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 18px 6px 12px 6px;
+            }
+            .header {
+                padding: 24px 0 16px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fa-solid fa-chart-line"></i> Sales Forecasting</h1>
+        <p>Predict your retail sales in ₹ (rupees) for Delhi, Mumbai, Pune</p>
+    </div>
+    <div class="container">
+        <form method="post">
+            <label for="Quantity"><i class="fa-solid fa-box"></i> Quantity:</label>
+            <input type="number" step="1" name="Quantity" id="Quantity" required value="{{ quantity if quantity is not none else '' }}">
+
+            <label for="PricePerUnit"><i class="fa-solid fa-indian-rupee-sign"></i> Price Per Unit:</label>
+            <input type="number" step="0.01" name="PricePerUnit" id="PricePerUnit" required value="{{ price_per_unit if price_per_unit is not none else '' }}">
+
+            <label for="ProductCategory"><i class="fa-solid fa-tags"></i> Product Category:</label>
+            <select name="ProductCategory" id="ProductCategory">
+                {% for cat in product_categories %}
+                <option value="{{ cat }}" {% if cat == product_category %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="ProductName"><i class="fa-solid fa-shirt"></i> Product Name:</label>
+            <select name="ProductName" id="ProductName">
+                {% for name in product_names %}
+                <option value="{{ name }}" {% if name == product_name %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="StoreID"><i class="fa-solid fa-store"></i> Store:</label>
+            <select name="StoreID" id="StoreID">
+                {% for store in stores %}
+                <option value="{{ store }}" {% if store == store_id %}selected{% endif %}>{{ store }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="City"><i class="fa-solid fa-city"></i> City:</label>
+            <select name="City" id="City">
+                {% for c in cities %}
+                <option value="{{ c }}" {% if c == city %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="model"><i class="fa-solid fa-robot"></i> Model:</label>
+            <select name="model" id="model">
+                {% for model in model_options %}
+                <option value="{{ model }}" {% if model == model_choice %}selected{% endif %}>{{ model }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit"><i class="fa-solid fa-magic"></i> Predict Sales</button>
+        </form>
+        
+        {% if prediction is not none %}
+        <div class="result">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+            <span><strong>Predicted Sales ({{ model_used }}):</strong> ₹{{ prediction | round(2) }}</span>
+        </div>
+        
+        {% if model_metrics %}
+        <div class="metrics">
+            <h4><i class="fa-solid fa-gauge-high"></i> Model Performance Metrics:</h4>
+            <p><strong>RMSE:</strong> {{ model_metrics.rmse | round(2) }}</p>
+            <p><strong>MAE:</strong> {{ model_metrics.mae | round(2) }}</p>
+            <p><strong>R² Score:</strong> {{ model_metrics.r2_score | round(3) }}</p>
+        </div>
+        {% endif %}
+        {% endif %}
+        
+        <div class="nav-links">
+            <a href="/model_comparison"><i class="fa-solid fa-table-list"></i> View Model Comparison</a>
+        </div>
+    </div>
+    <div class="footer">
+        &copy; {{ 2025 }} Sales Forecasting App &mdash; Powered by Machine Learning
+    </div>
+</body>
+</html> 

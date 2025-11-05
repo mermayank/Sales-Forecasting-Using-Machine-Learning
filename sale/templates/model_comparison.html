@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Comparison - Sales Forecasting</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2, h3 { color: #333; }
+        .model-section { margin: 20px 0; padding: 20px; border: 1px solid #dee2e6; border-radius: 4px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0; }
+        .metric-card { background: #f8f9fa; padding: 15px; border-radius: 4px; text-align: center; }
+        .metric-value { font-size: 24px; font-weight: bold; color: #007bff; }
+        .metric-label { color: #6c757d; margin-top: 5px; }
+        .feature-importance { margin: 20px 0; }
+        .importance-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee; }
+        .importance-item:last-child { border-bottom: none; }
+        .nav-links { text-align: center; margin-top: 20px; }
+        .nav-links a { color: #007bff; text-decoration: none; margin: 0 10px; }
+        .nav-links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Model Comparison & Performance Analysis</h2>
+        
+        <div class="model-section">
+            <h3>Model Performance Comparison</h3>
+            {% for model_name, metrics in comparison_results.items() %}
+            <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+                <h4>{{ model_name }}</h4>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">{{ metrics.rmse | round(2) }}</div>
+                        <div class="metric-label">RMSE</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">{{ metrics.mae | round(2) }}</div>
+                        <div class="metric-label">MAE</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">{{ metrics.r2_score | round(3) }}</div>
+                        <div class="metric-label">R² Score</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if rf_importance is not none %}
+        <div class="model-section">
+            <h3>Random Forest Feature Importance</h3>
+            <div class="feature-importance">
+                {% for _, row in rf_importance.iterrows() %}
+                <div class="importance-item">
+                    <span>{{ row.feature }}</span>
+                    <span>{{ row.importance | round(4) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if xgb_importance is not none %}
+        <div class="model-section">
+            <h3>XGBoost Feature Importance</h3>
+            <div class="feature-importance">
+                {% for _, row in xgb_importance.iterrows() %}
+                <div class="importance-item">
+                    <span>{{ row.feature }}</span>
+                    <span>{{ row.importance | round(4) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="nav-links">
+            <a href="/">Back to Prediction</a>
+        </div>
+    </div>
+</body>
+</html> 
